@@ -7,9 +7,11 @@ import CardContent from "@mui/material/CardContent";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export default function UserListView() {
-  const { data, loading, error } = useFetchUser(
+  const { data, deleteUser, loading, error } = useFetchUser(
     "https://jsonplaceholder.typicode.com/users"
   );
 
@@ -35,8 +37,20 @@ export default function UserListView() {
             >
               <Card
                 variant="outlined"
-                sx={{ width: 500, height: 150, margin: 2 }}
+                sx={{ width: 500, height: 200, margin: 2 }}
               >
+                <IconButton
+                  sx={{
+                    position: "relative",
+                    color: "red",
+                    top: 8,
+                    right: 8,
+                    left: 200,
+                  }}
+                  onClick={() => deleteUser(index)}
+                >
+                  <ClearIcon />
+                </IconButton>
                 <CardContent
                   sx={{
                     display: "flex",
@@ -47,7 +61,7 @@ export default function UserListView() {
                   <Typography
                     variant="h5"
                     component="div"
-                    sx={{ marginTop: 2, marginBottom: 1 }}
+                    sx={{ marginTop: 1, marginBottom: 1 }}
                   >
                     {user.name}
                   </Typography>
