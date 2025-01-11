@@ -105,7 +105,7 @@ export default function ToDoListView() {
   const [showForm, setShowForm] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
-  
+
   const searchTerm = useSelector((state: RootState) =>
     state.search.searchTerm.toLowerCase()
   );
@@ -152,7 +152,7 @@ export default function ToDoListView() {
       setShowForm(false);
     }
   }
-  console.log(todos)
+  console.log(todos);
 
   return (
     <>
@@ -199,15 +199,19 @@ export default function ToDoListView() {
               >
                 <Card
                   variant="outlined"
-                  sx={{ width: 400, height: 200, margin: 2 }}
+                  sx={{
+                    position: "relative",
+                    width: 400,
+                    height: 200,
+                    margin: 2,
+                  }}
                 >
                   <IconButton
                     sx={{
-                      position: "relative",
-                      color: "red",
+                      position: "absolute",
                       top: 8,
                       right: 8,
-                      left: 300,
+                      color: "red",
                     }}
                     onClick={() => handleRemoveTodo(index)}
                   >
@@ -237,7 +241,7 @@ export default function ToDoListView() {
           ))}
         </Grid>
 
-        {/* Pagination Controls */}
+        {/* Pagination */}
         <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
           <Button
             variant="contained"
