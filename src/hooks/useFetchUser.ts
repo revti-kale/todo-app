@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { userType } from "@/types/user";
 
+
 export default function useFetchUser(url: string) {
-  const [data, setData] = useState<userType[] | null>(null);
+  const [data, setData] = useState<userType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 

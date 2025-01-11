@@ -1,6 +1,6 @@
 "use client";
 import useFetchUser from "@/hooks/useFetchUser";
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -9,8 +9,14 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
+import Button from "@mui/material/Button";
+
 
 export default function UserListView() {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const userPerPage = 4;
+
   const { data, deleteUser, loading, error } = useFetchUser(
     "https://jsonplaceholder.typicode.com/users"
   );
@@ -23,10 +29,30 @@ export default function UserListView() {
     return <div>Error: {error.message}</div>;
   }
 
+  //Pagination
+  const indexOfLastUser = currentPage * userPerPage;
+  const indexOfFirstUser = indexOfLastUser - userPerPage;
+  const currentUsers = data
+    ? data.slice(indexOfFirstUser, indexOfLastUser)
+    : [];
+
+  // Handle Page Change
+  const handleNextPage = () => {
+    if (currentPage < Math.ceil(data.length / userPerPage)) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+
   return (
     <Container maxWidth="lg" sx={{ marginTop: 4 }}>
       <Grid container spacing={3} justifyContent="center">
-        {data?.map((user, index) => (
+        {currentUsers?.map((user, index) => (
           <Grid item xs={12} sm={6} md={3} key={index}>
             <Box
               sx={{
@@ -47,7 +73,7 @@ export default function UserListView() {
                     right: 8,
                     left: 200,
                   }}
-                  onClick={() => deleteUser(index)}
+                  onClick={() => deleteUser(user.id)}
                 >
                   <ClearIcon />
                 </IconButton>
@@ -77,6 +103,34 @@ export default function UserListView() {
           </Grid>
         ))}
       </Grid>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: 4,
+          alignItems: "center",
+        }}
+      >
+        <Button
+          variant="contained"
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+          sx={{ marginRight: 2 }}
+        >
+          Previous
+        </Button>
+        <Typography>
+          Page {currentPage} of {Math.ceil(data.length / userPerPage)}
+        </Typography>
+        <Button
+          variant="contained"
+          onClick={handleNextPage}
+          disabled={currentPage === Math.ceil(data.length / userPerPage)}
+          sx={{ marginLeft: 2 }}
+        >
+          Next
+        </Button>
+      </Box>
     </Container>
   );
 }
