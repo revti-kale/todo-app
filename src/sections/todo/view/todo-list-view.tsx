@@ -1,84 +1,99 @@
 "use client";
 import { RootState } from "@/redux/store";
+import { UserListView } from "@/sections/user/view";
+import ClearIcon from "@mui/icons-material/Clear";
+import { Divider } from "@mui/material";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import ClearIcon from "@mui/icons-material/Clear";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import TextareaAutosize from "@mui/material/TextareaAutosize";
-import { UserListView } from "@/sections/user/view";
-import { Divider } from "@mui/material";
-
 
 const myTodos = [
   {
+    id: 1,
     title: "Create Header Component",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 2,
     title: "Implement Search Functionality",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 3,
     title: "Build Playlist Management Feature",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 4,
     title: "Add Song Upload Feature",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 5,
     title: "Create User Profile Page",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 6,
     title: "Optimize Performance",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 7,
     title: "Implement Pagination",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 8,
     title: "Add Notification Feature",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 9,
     title: "Enhance UI Design",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 10,
     title: "Refactor Code",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 11,
     title: "Create User Profile Page",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 12,
     title: "Optimize Performance",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 13,
     title: "Implement Pagination",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 14,
     title: "Add Notification Feature",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 15,
     title: "Enhance UI Design",
     description: "Lorem ipsum dolor sit amet.",
   },
   {
+    id: 16,
     title: "Refactor Code",
     description: "Lorem ipsum dolor sit amet.",
   },
@@ -90,12 +105,13 @@ export default function ToDoListView() {
   const [showForm, setShowForm] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
-
-  const todosPerPage = 6;
-
+  
   const searchTerm = useSelector((state: RootState) =>
     state.search.searchTerm.toLowerCase()
   );
+
+  const todosPerPage = 6;
+
   const filteredTodos = todos.filter((todo) =>
     todo.title.toLowerCase().includes(searchTerm)
   );
@@ -126,6 +142,7 @@ export default function ToDoListView() {
   function handleAddTodo() {
     if (newTitle.trim() && newDescription.trim()) {
       const newTodo = {
+        id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 1,
         title: newTitle,
         description: newDescription,
       };
@@ -135,6 +152,7 @@ export default function ToDoListView() {
       setShowForm(false);
     }
   }
+  console.log(todos)
 
   return (
     <>

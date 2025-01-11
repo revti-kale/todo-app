@@ -10,16 +10,28 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
 import Button from "@mui/material/Button";
-
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 export default function UserListView() {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const userPerPage = 4;
+  const searchTerm = useSelector((state: RootState) =>
+    state.search.searchTerm.toLowerCase()
+  );
 
   const { data, deleteUser, loading, error } = useFetchUser(
     "https://jsonplaceholder.typicode.com/users"
   );
+
+  const filteredUsers = data.filter(
+    (data) =>
+      data.name.toLowerCase().includes(searchTerm) ||
+      data.email.toLowerCase().includes(searchTerm) ||
+      data.username.toLowerCase().includes(searchTerm)
+  );
+
+  const userPerPage = 4;
 
   if (loading) {
     return <div>Loading...</div>;
@@ -32,9 +44,7 @@ export default function UserListView() {
   //Pagination
   const indexOfLastUser = currentPage * userPerPage;
   const indexOfFirstUser = indexOfLastUser - userPerPage;
-  const currentUsers = data
-    ? data.slice(indexOfFirstUser, indexOfLastUser)
-    : [];
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   // Handle Page Change
   const handleNextPage = () => {
@@ -92,10 +102,10 @@ export default function UserListView() {
                     {user.name}
                   </Typography>
                   <Typography variant="body2" sx={{ flexGrow: 1 }}>
-                    {user.username}
+                    Username: {user.username}
                   </Typography>
                   <Typography variant="body2" sx={{ flexGrow: 1 }}>
-                    {user.email}
+                    Email: {user.email}
                   </Typography>
                 </CardContent>
               </Card>
@@ -109,6 +119,7 @@ export default function UserListView() {
           justifyContent: "center",
           marginTop: 4,
           alignItems: "center",
+          marginBottom:4
         }}
       >
         <Button
