@@ -73,7 +73,7 @@ export default function UserListView() {
             >
               <Card
                 variant="outlined"
-                sx={{ width: 500, height: 200, margin: 2 }}
+                sx={{ width: 500, height: 200, marginBottom: 2 }}
               >
                 <IconButton
                   sx={{

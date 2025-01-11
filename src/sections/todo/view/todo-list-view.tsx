@@ -100,11 +100,13 @@ const myTodos = [
 ];
 
 export default function ToDoListView() {
+
   const [todos, setTodos] = useState(myTodos);
   const [currentPage, setCurrentPage] = useState(1);
   const [showForm, setShowForm] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
+  const [selectedTodo, setSelectedTodo] = useState<any>(null);
 
   const searchTerm = useSelector((state: RootState) =>
     state.search.searchTerm.toLowerCase()
@@ -116,7 +118,7 @@ export default function ToDoListView() {
     todo.title.toLowerCase().includes(searchTerm)
   );
 
-  //Pagination
+  // Pagination
   const indexOfLastTodo = currentPage * todosPerPage;
   const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
   const currentTodos = filteredTodos.slice(indexOfFirstTodo, indexOfLastTodo);
@@ -131,6 +133,34 @@ export default function ToDoListView() {
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  // Handle editing a ToDo
+  const handleEditTodo = (todo: any) => {
+    setSelectedTodo(todo);
+    setNewTitle(todo.title);
+    setNewDescription(todo.description);
+    setShowForm(true);
+  };
+
+  const resetForm = () => {
+    setNewTitle("");
+    setNewDescription("");
+  };
+
+  // Handle updating a ToDo
+  const handleUpdateTodo = () => {
+    if (newTitle.trim() && newDescription.trim()) {
+      const updatedTodos = todos.map((todo) =>
+        todo.id === selectedTodo.id
+          ? { ...todo, title: newTitle, description: newDescription }
+          : todo
+      );
+      setTodos(updatedTodos);
+      setShowForm(false);
+      setSelectedTodo(null);
+      resetForm();
     }
   };
 
@@ -150,9 +180,9 @@ export default function ToDoListView() {
       setNewTitle("");
       setNewDescription("");
       setShowForm(false);
+      resetForm();
     }
   }
-  console.log(todos);
 
   return (
     <>
@@ -182,9 +212,15 @@ export default function ToDoListView() {
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
             />
-            <Button variant="contained" onClick={handleAddTodo}>
-              Add Todo
-            </Button>
+            {selectedTodo ? (
+              <Button variant="contained" onClick={handleUpdateTodo}>
+                Update Todo
+              </Button>
+            ) : (
+              <Button variant="contained" onClick={handleAddTodo}>
+                Add Todo
+              </Button>
+            )}
           </Box>
         )}
         <Grid container spacing={3} justifyContent="center">
@@ -195,6 +231,7 @@ export default function ToDoListView() {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
+                  marginTop: 2,
                 }}
               >
                 <Card
@@ -203,7 +240,7 @@ export default function ToDoListView() {
                     position: "relative",
                     width: 400,
                     height: 200,
-                    margin: 2,
+                    marginBottom: 2,
                   }}
                 >
                   <IconButton
@@ -223,6 +260,7 @@ export default function ToDoListView() {
                       flexDirection: "column",
                       justifyContent: "space-between",
                     }}
+                    onClick={() => handleEditTodo(todo)}
                   >
                     <Typography
                       variant="h5"
@@ -266,9 +304,18 @@ export default function ToDoListView() {
         </Box>
       </Container>
       <Divider />
-      <Typography sx={{ variant: "h5", margin: 3, marginLeft: 25 }}>
-        User Details
-      </Typography>
+      <Typography
+  sx={{
+    variant: "h5",
+    margin: 3,
+    marginLeft: 3,
+    fontWeight: "bold", 
+    fontSize: "1.75rem", 
+    color: "primary.main", 
+  }}
+>
+  User Details
+</Typography>
       <UserListView />
     </>
   );
