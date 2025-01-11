@@ -5,11 +5,13 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import ClearIcon from "@mui/icons-material/Clear";
 
-const todos = [
+const myTodos = [
   {
     title: "Create Header Component",
     description:
@@ -43,12 +45,19 @@ const todos = [
 ];
 
 export default function ToDoListView() {
+  const [todos, setTodos] = useState(myTodos);
+
   const searchTerm = useSelector((state: RootState) =>
     state.search.searchTerm.toLowerCase()
   );
   const filteredTodos = todos.filter((todo) =>
     todo.title.toLowerCase().includes(searchTerm)
   );
+
+  function handleRemoveTodo(item: number) {
+    const updatedTodos = todos.filter((_, i) => i !== item);
+    setTodos(updatedTodos);
+  }
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: 4 }}>
@@ -66,6 +75,18 @@ export default function ToDoListView() {
                 variant="outlined"
                 sx={{ width: 500, height: 250, margin: 2 }}
               >
+                <IconButton
+                  sx={{
+                    position: "relative",
+                    color: "red",
+                    top: 8,
+                    right: 8,
+                    left: 300,
+                  }}
+                  onClick={() => handleRemoveTodo(index)}
+                >
+                  <ClearIcon />
+                </IconButton>
                 <CardContent
                   sx={{
                     display: "flex",
