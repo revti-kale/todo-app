@@ -1,10 +1,13 @@
+"use client";
+import { RootState } from "@/redux/store";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-
+import { useSelector } from "react-redux";
+import ClearIcon from "@mui/icons-material/Clear";
 
 const todos = [
   {
@@ -40,10 +43,17 @@ const todos = [
 ];
 
 export default function ToDoListView() {
+  const searchTerm = useSelector((state: RootState) =>
+    state.search.searchTerm.toLowerCase()
+  );
+  const filteredTodos = todos.filter((todo) =>
+    todo.title.toLowerCase().includes(searchTerm)
+  );
+
   return (
     <Container maxWidth="lg" sx={{ marginTop: 4 }}>
       <Grid container spacing={3} justifyContent="center">
-        {todos.map((todo, index) => (
+        {filteredTodos.map((todo, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
             <Box
               sx={{

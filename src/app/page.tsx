@@ -1,10 +1,15 @@
-import Header from "./header";
-
+import Button from "@mui/material/Button";
+import Link from "next/link";
 
 export default function Home() {
   return (
-   <>
-   <h1>hello world</h1>
-   </>
+    <>
+      <Button LinkComponent={Link} href={"/todo/list"}>
+        ToDo List
+      </Button>
+      <Button LinkComponent={Link} href={"/user/list"}>
+        User List
+      </Button>
+    </>
   );
 }
