@@ -1,8 +1,10 @@
+import { Stack } from "@mui/material";
+import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
 import { Metadata } from "next";
 import ToDoListViewPage from "./todo/list/page";
 import UserListViewPage from "./user/list/page";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 
 export const metadata: Metadata = {
   title: "To-Do App",
@@ -12,21 +14,14 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <ToDoListViewPage />
-      <Divider />
-      <Typography
-        sx={{
-          variant: "h5",
-          margin: 3,
-          marginLeft: 3,
-          fontWeight: "bold",
-          fontSize: "1.75rem",
-          color: "primary.main",
-        }}
-      >
-        User Details
-      </Typography>
-      <UserListViewPage />
+      <Container maxWidth="lg">
+        <ToDoListViewPage />
+        <Divider />
+        <Stack sx={{ marginTop: 4 }} spacing={2}>
+          <Typography variant="h5">User List</Typography>
+          <UserListViewPage />
+        </Stack>
+      </Container>
     </>
   );
 }
