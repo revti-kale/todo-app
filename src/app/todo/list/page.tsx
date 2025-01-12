@@ -1,8 +1,7 @@
-import { ToDoListView } from '@/sections/todo/view';
-
+import { ToDoListView } from "@/sections/todo/view";
 
 export const metadata = {
-  title: 'ToDo List',
+  title: "TODO List",
 };
 
 export default function ToDoListViewPage() {

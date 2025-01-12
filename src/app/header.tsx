@@ -90,7 +90,7 @@ export default function Header() {
               component="div"
               sx={{ display: { xs: "none", sm: "block" } }}
             >
-              ToDo List App
+              TODO List App
             </Typography>
           </Link>
           <Search>
@@ -106,7 +106,7 @@ export default function Header() {
           <Box
             sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
           >
-            <Tooltip title="settings">
+            <Tooltip title="Menu">
               <IconButton
                 onClick={handleClick}
                 aria-controls={open ? "account-menu" : undefined}

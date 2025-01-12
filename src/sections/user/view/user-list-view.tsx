@@ -41,12 +41,10 @@ export default function UserListView() {
     return <div>Error: {error.message}</div>;
   }
 
-  //Pagination
   const indexOfLastUser = currentPage * userPerPage;
   const indexOfFirstUser = indexOfLastUser - userPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
-  // Handle Page Change
   const handleNextPage = () => {
     if (currentPage < Math.ceil(data.length / userPerPage)) {
       setCurrentPage((prevPage) => prevPage + 1);
@@ -119,7 +117,7 @@ export default function UserListView() {
           justifyContent: "center",
           marginTop: 4,
           alignItems: "center",
-          marginBottom:4
+          marginBottom: 4,
         }}
       >
         <Button

@@ -1,8 +1,7 @@
 "use client";
 import { RootState } from "@/redux/store";
-import { UserListView } from "@/sections/user/view";
 import ClearIcon from "@mui/icons-material/Clear";
-import { Divider } from "@mui/material";
+import { Checkbox } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -100,30 +99,28 @@ const myTodos = [
 ];
 
 export default function ToDoListView() {
-
   const [todos, setTodos] = useState(myTodos);
   const [currentPage, setCurrentPage] = useState(1);
   const [showForm, setShowForm] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [selectedTodo, setSelectedTodo] = useState<any>(null);
+  const [selectedTodos, setSelectedTodos] = useState<number[]>([]);
 
   const searchTerm = useSelector((state: RootState) =>
     state.search.searchTerm.toLowerCase()
   );
-
+  
   const todosPerPage = 6;
 
   const filteredTodos = todos.filter((todo) =>
     todo.title.toLowerCase().includes(searchTerm)
   );
 
-  // Pagination
   const indexOfLastTodo = currentPage * todosPerPage;
   const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
   const currentTodos = filteredTodos.slice(indexOfFirstTodo, indexOfLastTodo);
 
-  // Handle Page Change
   const handleNextPage = () => {
     if (currentPage < Math.ceil(filteredTodos.length / todosPerPage)) {
       setCurrentPage((prevPage) => prevPage + 1);
@@ -136,7 +133,6 @@ export default function ToDoListView() {
     }
   };
 
-  // Handle editing a ToDo
   const handleEditTodo = (todo: any) => {
     setSelectedTodo(todo);
     setNewTitle(todo.title);
@@ -149,7 +145,6 @@ export default function ToDoListView() {
     setNewDescription("");
   };
 
-  // Handle updating a ToDo
   const handleUpdateTodo = () => {
     if (newTitle.trim() && newDescription.trim()) {
       const updatedTodos = todos.map((todo) =>
@@ -183,6 +178,28 @@ export default function ToDoListView() {
       resetForm();
     }
   }
+
+  const handleSelectTodo = (id: number) => {
+    setSelectedTodos((prev) =>
+      prev.includes(id) ? prev.filter((todoId) => todoId !== id) : [...prev, id]
+    );
+  };
+
+  const handleSelectAll = () => {
+    if (selectedTodos.length === todos.length) {
+      setSelectedTodos([]);
+    } else {
+      setSelectedTodos(todos.map((todo) => todo.id));
+    }
+  };
+
+  const handleBatchDelete = () => {
+    const updatedTodos = todos.filter(
+      (todo) => !selectedTodos.includes(todo.id)
+    );
+    setTodos(updatedTodos);
+    setSelectedTodos([]);
+  };
 
   return (
     <>
@@ -223,6 +240,31 @@ export default function ToDoListView() {
             )}
           </Box>
         )}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "end",
+            gap: 2,
+            marginBottom: 2,
+            transform: "scale(0.8)",
+          }}
+        >
+          <Checkbox
+            checked={selectedTodos.length === todos.length}
+            onChange={handleSelectAll}
+          />
+          <Typography variant="h6" sx={{ marginTop: 1, marginLeft: -2 }}>
+            Select All
+          </Typography>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleBatchDelete}
+            disabled={selectedTodos.length === 0}
+          >
+            Delete Selected
+          </Button>
+        </Box>
         <Grid container spacing={3} justifyContent="center">
           {currentTodos.map((todo, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
@@ -243,6 +285,15 @@ export default function ToDoListView() {
                     marginBottom: 2,
                   }}
                 >
+                  <Checkbox
+                    checked={selectedTodos.includes(todo.id)}
+                    onChange={() => handleSelectTodo(todo.id)}
+                    sx={{
+                      position: "absolute",
+                      marginBottom: 14,
+                      transform: "scale(0.8)",
+                    }}
+                  />
                   <IconButton
                     sx={{
                       position: "absolute",
@@ -265,7 +316,7 @@ export default function ToDoListView() {
                     <Typography
                       variant="h5"
                       component="div"
-                      sx={{ marginTop: 1, marginBottom: 1 }}
+                      sx={{ marginTop: 2, marginBottom: 1 }}
                     >
                       {todo.title}
                     </Typography>
@@ -278,8 +329,6 @@ export default function ToDoListView() {
             </Grid>
           ))}
         </Grid>
-
-        {/* Pagination */}
         <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
           <Button
             variant="contained"
@@ -303,20 +352,6 @@ export default function ToDoListView() {
           </Button>
         </Box>
       </Container>
-      <Divider />
-      <Typography
-  sx={{
-    variant: "h5",
-    margin: 3,
-    marginLeft: 3,
-    fontWeight: "bold", 
-    fontSize: "1.75rem", 
-    color: "primary.main", 
-  }}
->
-  User Details
-</Typography>
-      <UserListView />
     </>
   );
 }
