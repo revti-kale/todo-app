@@ -51,43 +51,54 @@ export default function UserListView() {
     setCurrentPage(page);
   };
 
-
   return (
-    <Container maxWidth="lg">
-      <Grid2 container spacing={3}>
-        {currentUsers?.map((user, index) => (
-          <Grid2 size={{ xs: 12, sm: 6, md: 3 }} key={index}>
-            <Card variant="outlined">
-              <CardHeader
-                action={
-                  <Tooltip title="Delete user">
-                    <IconButton onClick={() => deleteUser(user.id)}>
-                      <ClearIcon />
-                    </IconButton>
-                  </Tooltip>
-                }
-                title={
-                  <Typography variant="h6" component="div">
-                    {user.name}
+    <>
+      {data.length === 0 ? (
+        <Box sx={{ textAlign: "center", marginTop: 5 }}>
+          <Typography variant="h6" color="textSecondary">
+            No user found
+          </Typography>
+        </Box>
+      ) : (
+        <Grid2 container spacing={3}>
+          {currentUsers?.map((user, index) => (
+            <Grid2 size={{ xs: 12, sm: 6, md: 3 }} key={index}>
+              <Card variant="outlined">
+                <CardHeader
+                  action={
+                    <Tooltip title="Delete user">
+                      <IconButton onClick={() => deleteUser(user.id)}>
+                        <ClearIcon />
+                      </IconButton>
+                    </Tooltip>
+                  }
+                  title={
+                    <Typography variant="h6" component="div">
+                      {user.name}
+                    </Typography>
+                  }
+                />
+                <CardContent>
+                  <Typography color="textSecondary" variant="body2">
+                    Username: {user.username}
                   </Typography>
-                }
-              />
-              <CardContent>
-                <Typography variant="body2">
-                  Username: {user.username}
-                </Typography>
-                <Typography variant="body2">Email: {user.email}</Typography>
-              </CardContent>
-            </Card>
-          </Grid2>
-        ))}
-      </Grid2>
-     <Pagination
-               currentPage={currentPage}
-               totalItems={data.length}
-               itemsPerPage={userPerPage}
-               onPageChange={handlePageChange}
-             />
-    </Container>
+                  <Typography color="textSecondary" variant="body2">
+                    Email: {user.email}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid2>
+          ))}
+        </Grid2>
+      )}
+      {data.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalItems={data.length}
+          itemsPerPage={userPerPage}
+          onPageChange={handlePageChange}
+        />
+      )}
+    </>
   );
 }

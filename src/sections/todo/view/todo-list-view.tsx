@@ -2,7 +2,10 @@
 import Pagination from "@/components/pagination";
 import { RootState } from "@/redux/store";
 import ClearIcon from "@mui/icons-material/Clear";
-import { CardHeader, Checkbox, Grid2, Stack } from "@mui/material";
+import CardHeader from "@mui/material/CardHeader";
+import Checkbox from "@mui/material/Checkbox";
+import Grid2 from "@mui/material/Grid2";
+import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -12,6 +15,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import Box from "@mui/material/Box";
 
 const myTodos = [
   {
@@ -148,7 +152,11 @@ export default function ToDoListView() {
       resetForm();
     }
   };
-
+  const handleCancle = () => {
+    setNewTitle("");
+    setNewDescription("");
+    setShowForm(false);
+  };
   function handleRemoveTodo(index: number) {
     const updatedTodos = todos.filter((_, i) => i !== indexOfFirstTodo + index);
     setTodos(updatedTodos);
@@ -193,16 +201,17 @@ export default function ToDoListView() {
 
   return (
     <>
-      <Container maxWidth="lg">
-        <Stack
-          sx={{
-            justifyContent: "flex-end",
-            paddingTop: 4,
-            paddingBottom: 4,
-          }}
-          direction="row"
-          spacing={3}
-        >
+      <Stack
+        sx={{
+          justifyContent: "space-between",
+          paddingTop: 4,
+          paddingBottom: 4,
+        }}
+        direction="row"
+        spacing={3}
+      >
+        <Typography variant="h5">Todo List</Typography>
+        <Stack direction="row" spacing={3}>
           <Button
             variant="text"
             onClick={() => setShowForm(!showForm)}
@@ -210,12 +219,12 @@ export default function ToDoListView() {
           >
             Add ToDo
           </Button>
-          <Stack direction="row" alignItems="center" >
+          <Stack direction="row" alignItems="center">
             <Checkbox
               checked={selectedTodos.length === todos.length}
               onChange={handleSelectAll}
             />
-            <Typography >Select All</Typography>
+            <Typography>Select All</Typography>
           </Stack>
           <Button
             variant="contained"
@@ -226,8 +235,12 @@ export default function ToDoListView() {
             Delete Selected
           </Button>
         </Stack>
-        {showForm && (
-          <Stack spacing={2}>
+      </Stack>
+
+      {showForm && (
+        <Card variant="outlined" sx={{ marginBottom: 4 }}>
+          <CardContent>
+            <Stack spacing={2}>
               <TextField
                 label="Title"
                 variant="outlined"
@@ -236,75 +249,89 @@ export default function ToDoListView() {
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
               />
-            <TextField
-              multiline
-              variant="outlined"
-              sx={{ cursor: "pointer" }}
-              minRows={4}
-              fullWidth
-              placeholder="Description"
-              value={newDescription}
-              onChange={(e) => setNewDescription(e.target.value)}
-            />
-            <Stack direction='row'>
-              <Button
-                variant="text"
-                onClick={() => setShowForm(!showForm)}
-              >
-                Cancel
-              </Button>
-              {selectedTodo ? (
-                <Button variant="text" onClick={handleUpdateTodo}>
-                  Update
+              <TextField
+                multiline
+                variant="outlined"
+                sx={{ cursor: "pointer" }}
+                minRows={4}
+                fullWidth
+                placeholder="Description"
+                value={newDescription}
+                onChange={(e) => setNewDescription(e.target.value)}
+              />
+              <Stack direction="row">
+                <Button variant="text" onClick={handleCancle}>
+                  Cancel
                 </Button>
-              ) : (
-                <Button variant="contained" onClick={handleAddTodo}>
-                  Save
-                </Button>
-              )}
+                {selectedTodo ? (
+                  <Button variant="contained" onClick={handleUpdateTodo}>
+                    Update
+                  </Button>
+                ) : (
+                  <Button variant="contained" onClick={handleAddTodo}>
+                    Save
+                  </Button>
+                )}
+              </Stack>
             </Stack>
-          </Stack>
-        )}
-
-        <Grid2 container spacing={3}>
-          {currentTodos.map((todo, index) => (
-            <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
-              <Card variant="outlined" sx={{ cursor: "pointer" }}>
-                <CardHeader
-                  onClick={() => handleEditTodo(todo)}
-                  avatar={
-                    <Checkbox
-                      checked={selectedTodos.includes(todo.id)}
-                      onChange={() => handleSelectTodo(todo.id)}
-                    />
-                  }
-                  action={
-                    <IconButton onClick={() => handleRemoveTodo(index)}>
-                      <ClearIcon />
-                    </IconButton>
-                  }
-                  title={
-                    <Typography variant="h6" component="div">
-                      {todo.title}
+          </CardContent>
+        </Card>
+      )}
+      {todos.length === 0 ? (
+        <Box sx={{ textAlign: "center", marginTop: 5 }}>
+          <Typography variant="h6" color="textSecondary">
+            Your to-do list is empty! 
+          </Typography>
+        </Box>
+      ) : (
+        <>
+          <Grid2 container spacing={3}>
+            {currentTodos.map((todo, index) => (
+              <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
+                <Card variant="outlined" sx={{ cursor: "pointer" }}>
+                  <CardHeader
+                    onClick={() => handleEditTodo(todo)}
+                    avatar={
+                      <Checkbox
+                        checked={selectedTodos.includes(todo.id)}
+                        onChange={() => handleSelectTodo(todo.id)}
+                      />
+                    }
+                    action={
+                      <IconButton
+                        onClick={(e) => {
+                          handleRemoveTodo(index);
+                          e.stopPropagation();
+                        }}
+                      >
+                        <ClearIcon />
+                      </IconButton>
+                    }
+                    title={
+                      <Typography variant="h6" component="div">
+                        {todo.title}
+                      </Typography>
+                    }
+                  />
+                  <CardContent>
+                    <Typography variant="body2" color="textSecondary" sx={{ flexGrow: 1 }}>
+                      {todo.description}
                     </Typography>
-                  }
-                />
-                <CardContent>
-                  <Typography variant="body2" sx={{ flexGrow: 1 }}>
-                    {todo.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid2>
-          ))}
-        </Grid2>
-        <Pagination
-          currentPage={currentPage}
-          totalItems={filteredTodos.length}
-          itemsPerPage={todosPerPage}
-          onPageChange={handlePageChange}
-        />
-      </Container>
+                  </CardContent>
+                </Card>
+              </Grid2>
+            ))}
+          </Grid2>
+          {filteredTodos.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalItems={filteredTodos.length}
+              itemsPerPage={todosPerPage}
+              onPageChange={handlePageChange}
+            />
+          )}
+        </>
+      )}
     </>
   );
 }

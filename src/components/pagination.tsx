@@ -39,7 +39,7 @@ export default function Pagination({
       direction="row"
     >
       <Button
-        variant="text"
+        variant="contained"
         onClick={handlePreviousPage}
         disabled={currentPage === 1}
       >
@@ -49,7 +49,7 @@ export default function Pagination({
         Page {currentPage} of {totalPages}
       </Typography>
       <Button
-        variant="text"
+        variant="contained"
         onClick={handleNextPage}
         disabled={currentPage === totalPages}
       >
