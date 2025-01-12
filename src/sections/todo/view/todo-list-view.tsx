@@ -1,16 +1,14 @@
 "use client";
+import Pagination from "@/components/pagination";
 import { RootState } from "@/redux/store";
 import ClearIcon from "@mui/icons-material/Clear";
-import { Checkbox } from "@mui/material";
-import Box from "@mui/material/Box";
+import { CardHeader, Checkbox, Grid2, Stack } from "@mui/material";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
-import TextareaAutosize from "@mui/material/TextareaAutosize";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -110,7 +108,7 @@ export default function ToDoListView() {
   const searchTerm = useSelector((state: RootState) =>
     state.search.searchTerm.toLowerCase()
   );
-  
+
   const todosPerPage = 6;
 
   const filteredTodos = todos.filter((todo) =>
@@ -121,16 +119,8 @@ export default function ToDoListView() {
   const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
   const currentTodos = filteredTodos.slice(indexOfFirstTodo, indexOfLastTodo);
 
-  const handleNextPage = () => {
-    if (currentPage < Math.ceil(filteredTodos.length / todosPerPage)) {
-      setCurrentPage((prevPage) => prevPage + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prevPage) => prevPage - 1);
-    }
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   const handleEditTodo = (todo: any) => {
@@ -203,59 +193,30 @@ export default function ToDoListView() {
 
   return (
     <>
-      <Container maxWidth="lg" sx={{ marginTop: 4, marginBottom: 4 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setShowForm(!showForm)}
-          sx={{ marginBottom: 2 }}
-        >
-          {showForm ? "Cancel" : "Add Todo"}
-        </Button>
-        {showForm && (
-          <Box sx={{ marginBottom: 2 }}>
-            <TextField
-              label="Title"
-              variant="outlined"
-              fullWidth
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              sx={{ marginBottom: 2 }}
-            />
-            <TextareaAutosize
-              minRows={4}
-              placeholder="Description"
-              style={{ width: "100%", padding: "8px", marginBottom: "16px" }}
-              value={newDescription}
-              onChange={(e) => setNewDescription(e.target.value)}
-            />
-            {selectedTodo ? (
-              <Button variant="contained" onClick={handleUpdateTodo}>
-                Update Todo
-              </Button>
-            ) : (
-              <Button variant="contained" onClick={handleAddTodo}>
-                Add Todo
-              </Button>
-            )}
-          </Box>
-        )}
-        <Box
+      <Container maxWidth="lg">
+        <Stack
           sx={{
-            display: "flex",
-            justifyContent: "end",
-            gap: 2,
-            marginBottom: 2,
-            transform: "scale(0.8)",
+            justifyContent: "flex-end",
+            paddingTop: 4,
+            paddingBottom: 4,
           }}
+          direction="row"
+          spacing={3}
         >
-          <Checkbox
-            checked={selectedTodos.length === todos.length}
-            onChange={handleSelectAll}
-          />
-          <Typography variant="h6" sx={{ marginTop: 1, marginLeft: -2 }}>
-            Select All
-          </Typography>
+          <Button
+            variant="text"
+            onClick={() => setShowForm(!showForm)}
+            sx={{ marginBottom: 2 }}
+          >
+            Add ToDo
+          </Button>
+          <Stack direction="row" alignItems="center" >
+            <Checkbox
+              checked={selectedTodos.length === todos.length}
+              onChange={handleSelectAll}
+            />
+            <Typography >Select All</Typography>
+          </Stack>
           <Button
             variant="contained"
             color="error"
@@ -264,93 +225,85 @@ export default function ToDoListView() {
           >
             Delete Selected
           </Button>
-        </Box>
-        <Grid container spacing={3} justifyContent="center">
-          {currentTodos.map((todo, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 2,
-                }}
+        </Stack>
+        {showForm && (
+          <Stack spacing={2}>
+              <TextField
+                label="Title"
+                variant="outlined"
+                sx={{ cursor: "pointer" }}
+                fullWidth
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+              />
+            <TextField
+              multiline
+              variant="outlined"
+              sx={{ cursor: "pointer" }}
+              minRows={4}
+              fullWidth
+              placeholder="Description"
+              value={newDescription}
+              onChange={(e) => setNewDescription(e.target.value)}
+            />
+            <Stack direction='row'>
+              <Button
+                variant="text"
+                onClick={() => setShowForm(!showForm)}
               >
-                <Card
-                  variant="outlined"
-                  sx={{
-                    position: "relative",
-                    width: 400,
-                    height: 200,
-                    marginBottom: 2,
-                  }}
-                >
-                  <Checkbox
-                    checked={selectedTodos.includes(todo.id)}
-                    onChange={() => handleSelectTodo(todo.id)}
-                    sx={{
-                      position: "absolute",
-                      marginBottom: 14,
-                      transform: "scale(0.8)",
-                    }}
-                  />
-                  <IconButton
-                    sx={{
-                      position: "absolute",
-                      top: 8,
-                      right: 8,
-                      color: "red",
-                    }}
-                    onClick={() => handleRemoveTodo(index)}
-                  >
-                    <ClearIcon />
-                  </IconButton>
-                  <CardContent
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                    }}
-                    onClick={() => handleEditTodo(todo)}
-                  >
-                    <Typography
-                      variant="h5"
-                      component="div"
-                      sx={{ marginTop: 2, marginBottom: 1 }}
-                    >
+                Cancel
+              </Button>
+              {selectedTodo ? (
+                <Button variant="text" onClick={handleUpdateTodo}>
+                  Update
+                </Button>
+              ) : (
+                <Button variant="contained" onClick={handleAddTodo}>
+                  Save
+                </Button>
+              )}
+            </Stack>
+          </Stack>
+        )}
+
+        <Grid2 container spacing={3}>
+          {currentTodos.map((todo, index) => (
+            <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={index}>
+              <Card variant="outlined" sx={{ cursor: "pointer" }}>
+                <CardHeader
+                  onClick={() => handleEditTodo(todo)}
+                  avatar={
+                    <Checkbox
+                      checked={selectedTodos.includes(todo.id)}
+                      onChange={() => handleSelectTodo(todo.id)}
+                    />
+                  }
+                  action={
+                    <IconButton onClick={() => handleRemoveTodo(index)}>
+                      <ClearIcon />
+                    </IconButton>
+                  }
+                  title={
+                    <Typography variant="h6" component="div">
                       {todo.title}
                     </Typography>
-                    <Typography variant="body2" sx={{ flexGrow: 1 }}>
-                      {todo.description}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Box>
-            </Grid>
+                  }
+                />
+                <CardContent>
+                  <Typography variant="body2" sx={{ flexGrow: 1 }}>
+                    {todo.description}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid2>
           ))}
-        </Grid>
-        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
-          <Button
-            variant="contained"
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </Button>
-          <Typography sx={{ margin: "0 16px", alignSelf: "center" }}>
-            Page {currentPage} of{" "}
-            {Math.ceil(filteredTodos.length / todosPerPage)}
-          </Typography>
-          <Button
-            variant="contained"
-            onClick={handleNextPage}
-            disabled={
-              currentPage === Math.ceil(filteredTodos.length / todosPerPage)
-            }
-          >
-            Next
-          </Button>
-        </Box>
+        </Grid2>
+        <Pagination
+          currentPage={currentPage}
+          totalItems={filteredTodos.length}
+          itemsPerPage={todosPerPage}
+          onPageChange={handlePageChange}
+        />
       </Container>
     </>
   );

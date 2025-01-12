@@ -1,17 +1,19 @@
 "use client";
+import Pagination from "@/components/pagination";
 import useFetchUser from "@/hooks/useFetchUser";
-import React, { useState } from "react";
+import { RootState } from "@/redux/store";
+import ClearIcon from "@mui/icons-material/Clear";
+import { CardHeader, Stack, Tooltip } from "@mui/material";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import Grid2 from "@mui/material/Grid2";
 import IconButton from "@mui/material/IconButton";
-import ClearIcon from "@mui/icons-material/Clear";
-import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import { useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 
 export default function UserListView() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,101 +47,47 @@ export default function UserListView() {
   const indexOfFirstUser = indexOfLastUser - userPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
-  const handleNextPage = () => {
-    if (currentPage < Math.ceil(data.length / userPerPage)) {
-      setCurrentPage((prevPage) => prevPage + 1);
-    }
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prevPage) => prevPage - 1);
-    }
-  };
 
   return (
-    <Container maxWidth="lg" sx={{ marginTop: 4 }}>
-      <Grid container spacing={3} justifyContent="center">
+    <Container maxWidth="lg">
+      <Grid2 container spacing={3}>
         {currentUsers?.map((user, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Card
-                variant="outlined"
-                sx={{ width: 500, height: 200, marginBottom: 2 }}
-              >
-                <IconButton
-                  sx={{
-                    position: "relative",
-                    color: "red",
-                    top: 8,
-                    right: 8,
-                    left: 200,
-                  }}
-                  onClick={() => deleteUser(user.id)}
-                >
-                  <ClearIcon />
-                </IconButton>
-                <CardContent
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography
-                    variant="h5"
-                    component="div"
-                    sx={{ marginTop: 1, marginBottom: 1 }}
-                  >
+          <Grid2 size={{ xs: 12, sm: 6, md: 3 }} key={index}>
+            <Card variant="outlined">
+              <CardHeader
+                action={
+                  <Tooltip title="Delete user">
+                    <IconButton onClick={() => deleteUser(user.id)}>
+                      <ClearIcon />
+                    </IconButton>
+                  </Tooltip>
+                }
+                title={
+                  <Typography variant="h6" component="div">
                     {user.name}
                   </Typography>
-                  <Typography variant="body2" sx={{ flexGrow: 1 }}>
-                    Username: {user.username}
-                  </Typography>
-                  <Typography variant="body2" sx={{ flexGrow: 1 }}>
-                    Email: {user.email}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Box>
-          </Grid>
+                }
+              />
+              <CardContent>
+                <Typography variant="body2">
+                  Username: {user.username}
+                </Typography>
+                <Typography variant="body2">Email: {user.email}</Typography>
+              </CardContent>
+            </Card>
+          </Grid2>
         ))}
-      </Grid>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: 4,
-          alignItems: "center",
-          marginBottom: 4,
-        }}
-      >
-        <Button
-          variant="contained"
-          onClick={handlePreviousPage}
-          disabled={currentPage === 1}
-          sx={{ marginRight: 2 }}
-        >
-          Previous
-        </Button>
-        <Typography>
-          Page {currentPage} of {Math.ceil(data.length / userPerPage)}
-        </Typography>
-        <Button
-          variant="contained"
-          onClick={handleNextPage}
-          disabled={currentPage === Math.ceil(data.length / userPerPage)}
-          sx={{ marginLeft: 2 }}
-        >
-          Next
-        </Button>
-      </Box>
+      </Grid2>
+     <Pagination
+               currentPage={currentPage}
+               totalItems={data.length}
+               itemsPerPage={userPerPage}
+               onPageChange={handlePageChange}
+             />
     </Container>
   );
 }
