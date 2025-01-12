@@ -3,7 +3,7 @@ import Pagination from "@/components/pagination";
 import useFetchUser from "@/hooks/useFetchUser";
 import { RootState } from "@/redux/store";
 import ClearIcon from "@mui/icons-material/Clear";
-import { CardHeader, Stack, Tooltip } from "@mui/material";
+import { CardHeader, Skeleton, Stack, Tooltip } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -36,7 +36,17 @@ export default function UserListView() {
   const userPerPage = 4;
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Stack direction={'row'} spacing={2}>
+        {[...Array(4)].map((_, index) => (
+          <Card key={index} variant="outlined">
+            <CardContent>
+            <Skeleton variant="rectangular" width={310} height={120} />
+            </CardContent>
+          </Card>
+        ))}
+      </Stack>
+    );
   }
 
   if (error) {
