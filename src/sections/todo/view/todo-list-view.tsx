@@ -278,11 +278,11 @@ export default function ToDoListView() {
         </Card>
       )}
       {todos.length === 0 ? (
-        <Box sx={{ textAlign: "center", marginTop: 5 }}>
+        <Stack alignItems={"center"} sx={{ marginBottom: 2 }}>
           <Typography variant="h6" color="textSecondary">
-            Your to-do list is empty! 
+            Your to-do list is empty!
           </Typography>
-        </Box>
+        </Stack>
       ) : (
         <>
           <Grid2 container spacing={3}>
@@ -314,7 +314,11 @@ export default function ToDoListView() {
                     }
                   />
                   <CardContent>
-                    <Typography variant="body2" color="textSecondary" sx={{ flexGrow: 1 }}>
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      sx={{ flexGrow: 1 }}
+                    >
                       {todo.description}
                     </Typography>
                   </CardContent>

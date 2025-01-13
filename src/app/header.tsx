@@ -83,16 +83,14 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar sx={{ justifyContent: "space-between" }}>
-          <Link href={"/"} passHref>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
-            >
-              TODO List App
-            </Typography>
-          </Link>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ display: { xs: "none", sm: "block" } }}
+          >
+            TODO List App
+          </Typography>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
