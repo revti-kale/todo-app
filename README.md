@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📋 ToDo App 
 
-## Getting Started
+A **ToDo App** built with **Next.js** and **TypeScript**. The app features a card-based layout for managing tasks, with functionality for adding, editing, deleting, searching, and batch deleting tasks. It also includes a **user list** fetched from an API using a **custom hook**.
 
-First, run the development server:
+---
+
+## 🛠️ Tech Stack
+- **Next.js**
+- **TypeScript**
+- **Material UI**
+- **Redux Toolkit**
+- **Axios** (for API calls)
+- **React Hooks**
+
+---
+
+## 🚀 Features
+
+### ✅ **Stage 1 Features**
+1. **Add/Delete ToDo Cards** – Create and remove tasks in a card-like layout.
+2. **Search Functionality** – Filter ToDo cards based on their headers.
+3. **Top Navbar with Hamburger Menu** – A responsive navbar with user options.
+4. **Bottom Bar with API Call** – Fetch and display users from [https://jsonplaceholder.typicode.com/users](https://jsonplaceholder.typicode.com/users) using a custom hook.
+5. **Responsive Design** – The UI adapts to different screen sizes.
+
+### ✅ **Stage 2 Features**
+1. **Edit ToDo Cards** – Select individual cards to edit their content.
+2. **Pagination** – Implement pagination for both ToDo cards and user cards.
+3. **Batch Delete** – Select multiple ToDo cards and delete them at once.
+4. **Clean and Bulletproof Architecture** – Ensured **no warnings** and **clean, maintainable code**.
+
+---
+
+## 📂 Folder Structure
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+📂 src
+ ┣ 📂 app
+ ┃ ┣ 📂 todo
+ ┃ ┃ ┗ 📂 list
+ ┃ ┃   ┗ 📜 page.tsx
+ ┃ ┣ 📂 user
+ ┃ ┃ ┗ 📂 list
+ ┃ ┃   ┗ 📜 page.tsx
+ ┃ ┣ 📜 header.tsx
+ ┃ ┣ 📜 layout.tsx
+ ┃ ┣ 📜 page.tsx
+ ┣ 📂 components
+ ┃ ┗ 📜 pagination.tsx
+ ┣ 📂 hooks
+ ┃ ┗ 📜 useFetchUser.ts
+ ┣ 📂 redux
+ ┃ ┣ 📜 searchSlice.ts
+ ┃ ┗ 📜 store.ts
+ ┣ 📂 sections
+ ┃ ┣ 📂 todo
+ ┃ ┃ ┣ 📂 view
+ ┃ ┃ ┃ ┣ 📜 index.ts
+ ┃ ┃ ┃ ┗ 📜 todo-list-view.tsx
+ ┃ ┗ 📂 user
+ ┃   ┣ 📂 view
+ ┃   ┃ ┣ 📜 index.ts
+ ┃   ┃ ┗ 📜 todo-list-view.tsx
+ ┗ 📂 type
+   ┗ 📜 todo.ts
+   ┗ 📜 user.ts
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
