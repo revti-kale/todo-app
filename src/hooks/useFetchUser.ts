@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { userType } from "@/types/user";
 
-
 export default function useFetchUser(url: string) {
   const [data, setData] = useState<userType[]>([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +18,7 @@ export default function useFetchUser(url: string) {
         setError(err);
         setLoading(false);
       });
-  }, []);
+  }, [url]);
 
   async function deleteUser(id: number) {
     try {

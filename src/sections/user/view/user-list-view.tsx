@@ -5,10 +5,8 @@ import { RootState } from "@/redux/store";
 import ClearIcon from "@mui/icons-material/Clear";
 import { CardHeader, Skeleton, Stack, Tooltip } from "@mui/material";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import Container from "@mui/material/Container";
 import Grid2 from "@mui/material/Grid2";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -37,11 +35,11 @@ export default function UserListView() {
 
   if (loading) {
     return (
-      <Stack direction={'row'} spacing={2}>
+      <Stack direction={"row"} spacing={2}>
         {[...Array(4)].map((_, index) => (
           <Card key={index} variant="outlined">
             <CardContent>
-            <Skeleton variant="rectangular" width={310} height={120} />
+              <Skeleton variant="rectangular" width={310} height={120} />
             </CardContent>
           </Card>
         ))}

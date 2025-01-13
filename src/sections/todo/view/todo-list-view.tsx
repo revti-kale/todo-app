@@ -1,102 +1,77 @@
 "use client";
 import Pagination from "@/components/pagination";
 import { RootState } from "@/redux/store";
+import { todoType } from "@/types/todo";
 import ClearIcon from "@mui/icons-material/Clear";
-import CardHeader from "@mui/material/CardHeader";
-import Checkbox from "@mui/material/Checkbox";
-import Grid2 from "@mui/material/Grid2";
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import Container from "@mui/material/Container";
+import CardHeader from "@mui/material/CardHeader";
+import Checkbox from "@mui/material/Checkbox";
+import Grid2 from "@mui/material/Grid2";
 import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import Box from "@mui/material/Box";
 
 const myTodos = [
   {
     id: 1,
-    title: "Create Header Component",
-    description: "Lorem ipsum dolor sit amet.",
+    title: "Remove Unused Code",
+    description: "Clean up unnecessary imports and code across all components.",
   },
   {
     id: 2,
-    title: "Implement Search Functionality",
-    description: "Lorem ipsum dolor sit amet.",
+    title: "Installed MUI Package",
+    description:
+      "Added Material UI package to use components like Button, Card, etc.",
   },
   {
     id: 3,
-    title: "Build Playlist Management Feature",
-    description: "Lorem ipsum dolor sit amet.",
+    title: "Header UI Component",
+    description: "Created a reusable header component.",
   },
   {
     id: 4,
-    title: "Add Song Upload Feature",
-    description: "Lorem ipsum dolor sit amet.",
+    title: "Todo UI Component",
+    description:
+      "Developed a card-based UI to display todos with add, edit, and delete options.",
   },
   {
     id: 5,
-    title: "Create User Profile Page",
-    description: "Lorem ipsum dolor sit amet.",
+    title: "User UI Component",
+    description:
+      "Built a user list UI with skeleton loading and pagination features.",
   },
   {
     id: 6,
-    title: "Optimize Performance",
-    description: "Lorem ipsum dolor sit amet.",
+    title: "User API Integration",
+    description:
+      "Fetched user data from the backend API and displayed it on the UI.",
   },
   {
     id: 7,
-    title: "Implement Pagination",
-    description: "Lorem ipsum dolor sit amet.",
+    title: "Implement Redux Store",
+    description: "Configured the Redux store for state management.",
   },
   {
     id: 8,
-    title: "Add Notification Feature",
-    description: "Lorem ipsum dolor sit amet.",
+    title: "Added Clear Icon",
+    description:
+      "Implemented a clear icon in the todo component to reset fields.",
   },
   {
     id: 9,
-    title: "Enhance UI Design",
-    description: "Lorem ipsum dolor sit amet.",
+    title: "Implement Search Functionality",
+    description:
+      "Add a search bar to filter the todo list based on title or description.",
   },
   {
     id: 10,
-    title: "Refactor Code",
-    description: "Lorem ipsum dolor sit amet.",
-  },
-  {
-    id: 11,
-    title: "Create User Profile Page",
-    description: "Lorem ipsum dolor sit amet.",
-  },
-  {
-    id: 12,
-    title: "Optimize Performance",
-    description: "Lorem ipsum dolor sit amet.",
-  },
-  {
-    id: 13,
-    title: "Implement Pagination",
-    description: "Lorem ipsum dolor sit amet.",
-  },
-  {
-    id: 14,
-    title: "Add Notification Feature",
-    description: "Lorem ipsum dolor sit amet.",
-  },
-  {
-    id: 15,
-    title: "Enhance UI Design",
-    description: "Lorem ipsum dolor sit amet.",
-  },
-  {
-    id: 16,
-    title: "Refactor Code",
-    description: "Lorem ipsum dolor sit amet.",
+    title: "Handle Empty State in Todo List",
+    description: "Show an empty state message when no todos are available.",
   },
 ];
 
@@ -106,7 +81,7 @@ export default function ToDoListView() {
   const [showForm, setShowForm] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
-  const [selectedTodo, setSelectedTodo] = useState<any>(null);
+  const [selectedTodo, setSelectedTodo] = useState<todoType | null>(null);
   const [selectedTodos, setSelectedTodos] = useState<number[]>([]);
 
   const searchTerm = useSelector((state: RootState) =>
@@ -127,7 +102,7 @@ export default function ToDoListView() {
     setCurrentPage(page);
   };
 
-  const handleEditTodo = (todo: any) => {
+  const handleEditTodo = (todo: todoType) => {
     setSelectedTodo(todo);
     setNewTitle(todo.title);
     setNewDescription(todo.description);
@@ -142,7 +117,7 @@ export default function ToDoListView() {
   const handleUpdateTodo = () => {
     if (newTitle.trim() && newDescription.trim()) {
       const updatedTodos = todos.map((todo) =>
-        todo.id === selectedTodo.id
+        todo.id === selectedTodo?.id
           ? { ...todo, title: newTitle, description: newDescription }
           : todo
       );

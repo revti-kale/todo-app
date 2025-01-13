@@ -16,7 +16,6 @@ export default function Pagination({
   itemsPerPage,
   onPageChange,
 }: paginationProp) {
-    
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const handlePreviousPage = () => {
@@ -29,7 +28,7 @@ export default function Pagination({
 
   return (
     <Stack
-    sx={{
+      sx={{
         paddingTop: 4,
         paddingBottom: 4,
       }}
